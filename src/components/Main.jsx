@@ -3,54 +3,38 @@ import * as ReactBootStrap from "react-bootstrap";
 import { connect } from "react-redux";
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      players: [],
-    };
-  }
+  
   async componentDidMount() {
-    const data = await fetch(
-      "https://s3-ap-southeast-1.amazonaws.com/he-public-data/bets7747a43.json",
-      {
-        mode: "cors",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
-    );
-    const player = await data.json();
-    const players = player.map((player, index) => {
-      return {
-        Name: player.Name,
-        Price: player.Price,
-        Bet: player.Bet,
-        ProfileImage: player["Profile Image"],
-        Level: 1,
-        Wins: 0,
-        Lost: 0,
-        id: index,
-        selected: false,
-      };
-    });
+    if (this.props.players.length === 0) {
+      const data = await fetch(
+        "https://s3-ap-southeast-1.amazonaws.com/he-public-data/bets7747a43.json",
+        {
+          mode: "cors",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
+      const player = await data.json();
+      const players = player.map((player, index) => {
+        return {
+          Name: player.Name,
+          Price: player.Price,
+          Bet: player.Bet,
+          ProfileImage: player["Profile Image"],
+          Level: 1,
+          Wins: 0,
+          Lost: 0,
+          id: index,
+          selected: false,
+        };
+      });
 
-    this.props.setPlayers(players);
+      this.props.setPlayers(players);
+    }
+
   }
 
-  setPlayer = (player, index) => {
-    return (
-      <tr key={index}>
-        <td>{player.name}</td>
-        <td>{player.level}</td>
-        <td>{player.avatar}</td>
-        <td>{player.bet}</td>
-        <td>{player.wins}</td>
-        <td>{player.lost}</td>
-        <td>{player.price}</td>
-      </tr>
-    );
-  };
-  state = {};
   render() {
     return (
       <div className="Main">
@@ -61,12 +45,12 @@ class Main extends Component {
           <ReactBootStrap.InputGroup className="mb-3">
             <ReactBootStrap.InputGroup.Prepend>
               <ReactBootStrap.InputGroup.Text id="basic-addon1">
-                @
+                #
               </ReactBootStrap.InputGroup.Text>
             </ReactBootStrap.InputGroup.Prepend>
             <ReactBootStrap.FormControl
-              placeholder="Username"
-              aria-label="Username"
+              placeholder="Select Players"
+              aria-label="Select Players"
               aria-describedby="basic-addon1"
             />
           </ReactBootStrap.InputGroup>
@@ -91,6 +75,7 @@ class Main extends Component {
                   <td>
                     <ReactBootStrap.Form.Check
                       type="checkbox"
+                      checked={player.selected}
                       onChange={() => {
                         this.props.alterUserPlayingCondition(player.id);
                       }}

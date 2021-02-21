@@ -26,13 +26,16 @@ function reducer(state = defaultState, action) {
     case "UPDATE_PLAYER_WIN":
       const updatedPlayer = state.players.map((player) => {
         let clonedPlayer = { ...player };
-        if (action.payload == clonedPlayer.Bet) {
-          clonedPlayer.Wins++;
-          clonedPlayer.Price *= 2;
+        if(clonedPlayer.selected){
+          if (action.payload == clonedPlayer.Bet) {
+            clonedPlayer.Wins++;
+            clonedPlayer.Price *= 2;
+          }else{
+            clonedPlayer.Lost++;
+          }
         }
         return clonedPlayer;
       });
-      console.log(updatedPlayer);
       return {
         ...state,
         players: updatedPlayer,

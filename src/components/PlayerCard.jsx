@@ -1,4 +1,5 @@
 import React from "react";
+import wins from "../images/wins.png";
 
 const PlayerCard = ({
   Name,
@@ -33,15 +34,15 @@ const PlayerCard = ({
           />
         </div>
         <div className="col-md-8">
-          <div className="row">{Name}</div>
-          <div className="row">{Level}</div>
+          <div className="row" style={{wordBreak:"break-word"}}>{Name}</div>
+          <div className="row">Level: {Level}</div>
         </div>
       </div>
       <div className="row">
-        <div className="col-md-6">{Price}</div>
-        <div className="col-md-6">{Bet}</div>
+        <div className="col-md-6">Price: {Price}</div>
+        <div className="col-md-6">Bet: {Bet}</div>
       </div>
-      <div className="row">{Wins}</div>
+      <div className="row" style={{paddingLeft:20}}><img src={wins} alt="wins" width="20px" height="20px" />&nbsp;&nbsp;{Wins}</div>
     </div>
   );
 };
